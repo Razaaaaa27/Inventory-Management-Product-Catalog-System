@@ -1,0 +1,111 @@
+<div class="container py-4">
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/dashboard">Dashboard</a></li>
+            <li class="breadcrumb-item"><a href="/dashboard/orders">My Orders</a></li>
+            <li class="breadcrumb-item active">Order Details</li>
+        </ol>
+    </nav>
+
+    <div class="row">
+        <!-- Order Summary -->
+        <div class="col-md-8">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Order #<%= order._id.toString().slice(-8).toUpperCase() %></h5>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <p class="mb-1"><strong>Order Date:</strong></p>
+                            <p class="text-muted"><%= new Date(order.createdAt).toLocaleDateString() %></p>
+                        </div>
+                        <div class="col-md-6">
+                            <p class="mb-1"><strong>Order Status:</strong></p>
+                            <span class="badge bg-<%= order.status === 'delivered' ? 'success' : 
+                                order.status === 'shipped' ? 'info' : 
+                                order.status === 'processing' ? 'primary' : 
+                                order.status === 'cancelled' ? 'danger' : 'warning' %>">
+                                <%= order.status.charAt(0).toUpperCase() + order.status.slice(1) %>
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Order Items -->
+                    <h6 class="mb-3">Order Items</h6>
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Product</th>
+                                    <th>Price</th>
+                                    <th>Quantity</th>
+                                    <th class="text-end">Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% order.items.forEach(function(item) { %>
+                                    <tr>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <% if (item.product.image) { %>
+                                                    <img src="<%= item.product.image %>" 
+                                                         alt="<%= item.product.name %>"
+                                                         class="me-2"
+                                                         style="width: 50px; height: 50px; object-fit: cover;">
+                                                <% } %>
+                                                <div>
+                                                    <h6 class="mb-0"><%= item.product.name %></h6>
+                                                    <small class="text-muted"><%= item.product.category ? item.product.category.name : 'Uncategorized' %></small>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>$<%= item.price.toFixed(2) %></td>
+                                        <td><%= item.quantity %></td>
+                                        <td class="text-end">$<%= (item.price * item.quantity).toFixed(2) %></td>
+                                    </tr>
+                                <% }); %>
+                                <tr>
+                                    <td colspan="3" class="text-end"><strong>Total Amount:</strong></td>
+                                    <td class="text-end"><strong>$<%= order.totalAmount.toFixed(2) %></strong></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Shipping Information -->
+        <div class="col-md-4">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Shipping Information</h5>
+                </div>
+                <div class="card-body">
+                    <% if (order.shippingAddress) { %>
+                        <p class="mb-1"><%= order.shippingAddress.street %></p>
+                        <p class="mb-1"><%= order.shippingAddress.city %>, <%= order.shippingAddress.state %> <%= order.shippingAddress.zipCode %></p>
+                        <p class="mb-0"><%= order.shippingAddress.country %></p>
+                    <% } else { %>
+                        <p class="text-muted mb-0">No shipping information available</p>
+                    <% } %>
+                </div>
+            </div>
+
+            <!-- Payment Information -->
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Payment Status</h5>
+                </div>
+                <div class="card-body">
+                    <span class="badge bg-<%= order.paymentStatus === 'paid' ? 'success' : 
+                        order.paymentStatus === 'failed' ? 'danger' : 'warning' %>">
+                        <%= order.paymentStatus.charAt(0).toUpperCase() + order.paymentStatus.slice(1) %>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 

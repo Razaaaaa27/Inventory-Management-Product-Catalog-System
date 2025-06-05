@@ -1,0 +1,100 @@
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"></script>
+    
+    <!-- Form validation script -->
+    <script>
+        // Enable Bootstrap form validation
+        (function () {
+            'use strict'
+            var forms = document.querySelectorAll('.needs-validation')
+            Array.prototype.slice.call(forms).forEach(function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (!form.checkValidity()) {
+                        event.preventDefault()
+                        event.stopPropagation()
+                    }
+                    form.classList.add('was-validated')
+                }, false)
+            })
+        })()
+
+        // Auto-hide alerts after 5 seconds
+        document.addEventListener('DOMContentLoaded', function() {
+            const alerts = document.querySelectorAll('.alert');
+            alerts.forEach(function(alert) {
+                setTimeout(function() {
+                    const bsAlert = new bootstrap.Alert(alert);
+                    bsAlert.close();
+                }, 5000);
+            });
+        });
+    </script>
+</body>
+</html>
+
+<!-- Footer -->
+<footer class="footer bg-light mt-auto py-4">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-6 col-md-2">
+                <h6 class="fw-bold mb-3">Quick Links</h6>
+                <ul class="list-unstyled">
+                    <li class="mb-2"><a href="/" class="text-decoration-none text-secondary">Home</a></li>
+                    <li class="mb-2"><a href="/products" class="text-decoration-none text-secondary">Products</a></li>
+                    <li class="mb-2"><a href="/about" class="text-decoration-none text-secondary">About</a></li>
+                    <li class="mb-2"><a href="/contact" class="text-decoration-none text-secondary">Contact</a></li>
+                </ul>
+            </div>
+            
+            <div class="col-6 col-md-2">
+                <h6 class="fw-bold mb-3">Categories</h6>
+                <ul class="list-unstyled">
+                    <% if (locals.categories && categories.length > 0) { %>
+                        <% categories.slice(0, 4).forEach(function(category) { %>
+                            <li class="mb-2">
+                                <a href="/category/<%= category.slug %>" class="text-decoration-none text-secondary">
+                                    <%= category.name %>
+                                </a>
+                            </li>
+                        <% }); %>
+                    <% } else { %>
+                        <li class="mb-2 text-muted">No categories available</li>
+                    <% } %>
+                </ul>
+            </div>
+            
+            <div class="col-6 col-md-2">
+                <h6 class="fw-bold mb-3">Support</h6>
+                <ul class="list-unstyled">
+                    <li class="mb-2"><a href="/faq" class="text-decoration-none text-secondary">FAQ</a></li>
+                    <li class="mb-2"><a href="/contact" class="text-decoration-none text-secondary">Contact Us</a></li>
+                    <li class="mb-2"><a href="/privacy" class="text-decoration-none text-secondary">Privacy Policy</a></li>
+                    <li class="mb-2"><a href="/terms" class="text-decoration-none text-secondary">Terms of Service</a></li>
+                </ul>
+            </div>
+            
+            <div class="col-12 col-md-4">
+                <h6 class="fw-bold mb-3">Newsletter</h6>
+                <p class="text-muted mb-3">Subscribe to our newsletter for updates and offers.</p>
+                <form class="newsletter-form">
+                    <div class="input-group">
+                        <input type="email" class="form-control" placeholder="Enter your email" aria-label="Email for newsletter">
+                        <button class="btn btn-primary" type="submit">Subscribe</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <hr class="my-4">
+        
+        <div class="row align-items-center">
+            <div class="col-md-6 text-center text-md-start">
+                <p class="mb-0 text-muted">&copy; <%= new Date().getFullYear() %> Inventory System. All rights reserved.</p>
+            </div>
+            <div class="col-md-6 text-center text-md-end mt-3 mt-md-0">
+                <img src="/img/payment-methods.png" alt="Payment methods" class="payment-methods" style="height: 24px;">
+            </div>
+        </div>
+    </div>
+</footer> 

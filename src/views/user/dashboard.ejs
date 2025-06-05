@@ -1,0 +1,155 @@
+<div class="container py-4">
+    <!-- Dashboard Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h2">Welcome, <%= user.name %></h1>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="row mb-4">
+        <!-- Orders -->
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="card-subtitle text-muted">Total Orders</h6>
+                            <h2 class="card-title mb-0">0</h2>
+                        </div>
+                        <div class="text-primary">
+                            <i class="fas fa-shopping-cart fa-2x"></i>
+                        </div>
+                    </div>
+                    <a href="/dashboard/orders" class="btn btn-link px-0">View orders</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Wishlist -->
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="card-subtitle text-muted">Wishlist Items</h6>
+                            <h2 class="card-title mb-0">0</h2>
+                        </div>
+                        <div class="text-danger">
+                            <i class="fas fa-heart fa-2x"></i>
+                        </div>
+                    </div>
+                    <a href="/dashboard/wishlist" class="btn btn-link px-0">View wishlist</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cart -->
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="card-subtitle text-muted">Cart Items</h6>
+                            <h2 class="card-title mb-0">0</h2>
+                        </div>
+                        <div class="text-success">
+                            <i class="fas fa-shopping-basket fa-2x"></i>
+                        </div>
+                    </div>
+                    <a href="/cart" class="btn btn-link px-0">View cart</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Products -->
+    <div class="card mb-4">
+        <div class="card-header">
+            <h5 class="card-title mb-0">Recent Products</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <% if (products && products.length > 0) { %>
+                    <% products.forEach(function(product) { %>
+                        <div class="col-md-4 mb-4">
+                            <div class="card h-100">
+                                <% if (product.image) { %>
+                                    <img src="<%= product.image %>" 
+                                         class="card-img-top" 
+                                         alt="<%= product.name %>"
+                                         style="height: 200px; object-fit: cover;">
+                                <% } else { %>
+                                    <div class="bg-light d-flex align-items-center justify-content-center"
+                                         style="height: 200px;">
+                                        <i class="fas fa-image fa-3x text-muted"></i>
+                                    </div>
+                                <% } %>
+                                <div class="card-body">
+                                    <h5 class="card-title"><%= product.name %></h5>
+                                    <% if (product.category) { %>
+                                        <span class="badge bg-info mb-2"><%= product.category.name %></span>
+                                    <% } %>
+                                    <p class="card-text text-muted">
+                                        <%= product.description ? product.description.substring(0, 100) + '...' : 'No description available' %>
+                                    </p>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <h4 class="mb-0">$<%= product.price.toFixed(2) %></h4>
+                                        <div>
+                                            <button class="btn btn-outline-danger btn-sm me-1" title="Add to Wishlist">
+                                                <i class="fas fa-heart"></i>
+                                            </button>
+                                            <button class="btn btn-primary btn-sm" title="Add to Cart">
+                                                <i class="fas fa-shopping-cart"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <% }); %>
+                <% } else { %>
+                    <div class="col-12">
+                        <p class="text-muted text-center mb-0">No products available</p>
+                    </div>
+                <% } %>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Links -->
+    <div class="row">
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Quick Links</h5>
+                </div>
+                <div class="card-body">
+                    <div class="list-group">
+                        <a href="/dashboard/profile" class="list-group-item list-group-item-action">
+                            <i class="fas fa-user me-2"></i> My Profile
+                        </a>
+                        <a href="/dashboard/orders" class="list-group-item list-group-item-action">
+                            <i class="fas fa-shopping-cart me-2"></i> My Orders
+                        </a>
+                        <a href="/dashboard/wishlist" class="list-group-item list-group-item-action">
+                            <i class="fas fa-heart me-2"></i> My Wishlist
+                        </a>
+                        <a href="/dashboard/settings" class="list-group-item list-group-item-action">
+                            <i class="fas fa-cog me-2"></i> Account Settings
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Need Help?</h5>
+                </div>
+                <div class="card-body">
+                    <p class="card-text">If you have any questions or need assistance, our support team is here to help.</p>
+                    <a href="/contact" class="btn btn-primary">Contact Support</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 

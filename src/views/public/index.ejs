@@ -1,0 +1,76 @@
+<%- include('../partials/header') %>
+
+<!-- Hero Section -->
+<div class="hero-section text-center">
+    <div class="container">
+        <h1 class="display-4 mb-3">Welcome to Inventory Management System</h1>
+        <p class="lead mb-4">Manage your inventory efficiently with our comprehensive system.</p>
+        <% if (!locals.user) { %>
+            <div class="d-grid gap-3 d-sm-flex justify-content-sm-center">
+                <a href="/auth/register" class="btn btn-light btn-lg px-4 gap-3">Get Started</a>
+                <a href="/auth/login" class="btn btn-outline-light btn-lg px-4">Login</a>
+            </div>
+        <% } %>
+    </div>
+</div>
+
+<!-- Features Section -->
+<div class="container">
+    <h2 class="text-center mb-4">Our Features</h2>
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <div class="mb-3">
+                        <i class="fas fa-box fa-3x text-primary"></i>
+                    </div>
+                    <h5 class="card-title">Product Management</h5>
+                    <p class="card-text">Easily manage your products and track inventory levels in real-time.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <div class="mb-3">
+                        <i class="fas fa-chart-line fa-3x text-primary"></i>
+                    </div>
+                    <h5 class="card-title">Stock Tracking</h5>
+                    <p class="card-text">Monitor stock levels and get notifications for low inventory.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <div class="mb-3">
+                        <i class="fas fa-tags fa-3x text-primary"></i>
+                    </div>
+                    <h5 class="card-title">Category Management</h5>
+                    <p class="card-text">Organize products with customizable categories for better management.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Call to Action -->
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 text-center">
+            <div class="card bg-primary text-white">
+                <div class="card-body py-5">
+                    <h3 class="card-title">Ready to Get Started?</h3>
+                    <p class="card-text">Join us today and take control of your inventory management.</p>
+                    <% if (!locals.user) { %>
+                        <a href="/auth/register" class="btn btn-light btn-lg">Sign Up Now</a>
+                    <% } else { %>
+                        <a href="<%= user.isAdmin ? '/admin' : '/dashboard' %>" class="btn btn-light btn-lg">Go to Dashboard</a>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include('../partials/footer') %> 

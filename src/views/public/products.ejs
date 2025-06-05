@@ -1,0 +1,112 @@
+<!-- Hero Section -->
+<section class="hero-section text-center">
+    <div class="container">
+        <h1 class="display-4 fw-bold mb-4">Our Products</h1>
+        <p class="lead mb-4">Discover our wide range of high-quality products</p>
+        
+        <!-- Category Pills -->
+        <div class="category-pills">
+            <a href="/products" class="btn <%= !category ? 'btn-primary' : 'btn-outline-light' %>">All</a>
+            <% categories.forEach(cat => { %>
+                <a href="/products?category=<%= cat._id %>" 
+                   class="btn <%= category && category._id.toString() === cat._id.toString() ? 'btn-primary' : 'btn-outline-light' %>">
+                    <%= cat.name %>
+                </a>
+            <% }); %>
+        </div>
+    </div>
+</section>
+
+<!-- Products Section -->
+<section class="container py-5">
+    <!-- Filters and Sort -->
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="d-flex align-items-center">
+                <span class="me-3">Sort by:</span>
+                <select class="form-select w-auto" onchange="window.location.href=this.value">
+                    <option value="/products?sort=newest" <%= sort === 'newest' ? 'selected' : '' %>>Newest</option>
+                    <option value="/products?sort=price-asc" <%= sort === 'price-asc' ? 'selected' : '' %>>Price: Low to High</option>
+                    <option value="/products?sort=price-desc" <%= sort === 'price-desc' ? 'selected' : '' %>>Price: High to Low</option>
+                    <option value="/products?sort=name-asc" <%= sort === 'name-asc' ? 'selected' : '' %>>Name: A to Z</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-md-6 text-md-end">
+            <% if (products.length > 0) { %>
+                <p class="mb-0">Showing <%= products.length %> products</p>
+            <% } %>
+        </div>
+    </div>
+
+    <!-- Products Grid -->
+    <div class="row g-4 product-grid">
+        <% if (products.length > 0) { %>
+            <% products.forEach(product => { %>
+                <div class="col-12 col-sm-6 col-lg-3">
+                    <div class="card h-100 product-card">
+                        <% if (product.image) { %>
+                            <img src="<%= product.image %>" class="card-img-top" alt="<%= product.name %>">
+                        <% } else { %>
+                            <div class="card-img-top d-flex align-items-center justify-content-center bg-light">
+                                <i class="fas fa-image fa-3x text-secondary"></i>
+                            </div>
+                        <% } %>
+                        <div class="card-body">
+                            <% if (product.category) { %>
+                                <small class="text-primary mb-2 d-block"><%= product.category.name %></small>
+                            <% } %>
+                            <h5 class="card-title">
+                                <a href="/products/<%= product._id %>" class="text-decoration-none text-dark">
+                                    <%= product.name %>
+                                </a>
+                            </h5>
+                            <p class="card-text text-muted small mb-2"><%= product.description.substring(0, 100) %>...</p>
+                            <div class="d-flex justify-content-between align-items-center mt-3">
+                                <span class="price">$<%= product.price.toFixed(2) %></span>
+                                <% if (product.stock > 0) { %>
+                                    <span class="badge bg-success">In Stock</span>
+                                <% } else { %>
+                                    <span class="badge bg-danger">Out of Stock</span>
+                                <% } %>
+                            </div>
+                        </div>
+                        <div class="card-footer bg-white border-top-0">
+                            <div class="d-grid">
+                                <a href="/products/<%= product._id %>" class="btn btn-outline-primary">
+                                    View Details
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <% }); %>
+        <% } else { %>
+            <div class="col-12 text-center py-5">
+                <i class="fas fa-box-open fa-3x text-secondary mb-3"></i>
+                <h3>No Products Found</h3>
+                <p class="text-muted">We couldn't find any products matching your criteria.</p>
+                <a href="/products" class="btn btn-primary">View All Products</a>
+            </div>
+        <% } %>
+    </div>
+
+    <!-- Pagination -->
+    <% if (totalPages > 1) { %>
+        <nav aria-label="Product pagination" class="mt-5">
+            <ul class="pagination justify-content-center">
+                <li class="page-item <%= currentPage === 1 ? 'disabled' : '' %>">
+                    <a class="page-link" href="/products?page=<%= currentPage - 1 %>" tabindex="-1">Previous</a>
+                </li>
+                <% for(let i = 1; i <= totalPages; i++) { %>
+                    <li class="page-item <%= currentPage === i ? 'active' : '' %>">
+                        <a class="page-link" href="/products?page=<%= i %>"><%= i %></a>
+                    </li>
+                <% } %>
+                <li class="page-item <%= currentPage === totalPages ? 'disabled' : '' %>">
+                    <a class="page-link" href="/products?page=<%= currentPage + 1 %>">Next</a>
+                </li>
+            </ul>
+        </nav>
+    <% } %>
+</section> 

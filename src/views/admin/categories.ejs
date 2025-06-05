@@ -1,0 +1,213 @@
+<div class="container-fluid py-4">
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3 mb-0">Category Management</h1>
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addCategoryModal">
+            <i class="fas fa-plus"></i> Add Category
+        </button>
+    </div>
+
+    <!-- Categories Table -->
+    <div class="card">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Slug</th>
+                            <th>Description</th>
+                            <th>Products</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% categories.forEach(function(category) { %>
+                            <tr>
+                                <td><%= category.name %></td>
+                                <td><code><%= category.slug %></code></td>
+                                <td>
+                                    <% if (category.description) { %>
+                                        <%= category.description %>
+                                    <% } else { %>
+                                        <span class="text-muted">No description</span>
+                                    <% } %>
+                                </td>
+                                <td>
+                                    <% if (category.productCount > 0) { %>
+                                        <a href="/admin/products?category=<%= category._id %>" class="text-decoration-none">
+                                            <%= category.productCount %> product<%= category.productCount !== 1 ? 's' : '' %>
+                                        </a>
+                                    <% } else { %>
+                                        <span class="text-muted">No products</span>
+                                    <% } %>
+                                </td>
+                                <td>
+                                    <% if (category.isActive) { %>
+                                        <span class="badge bg-success">Active</span>
+                                    <% } else { %>
+                                        <span class="badge bg-secondary">Inactive</span>
+                                    <% } %>
+                                </td>
+                                <td>
+                                    <div class="btn-group">
+                                        <button type="button" class="btn btn-sm btn-outline-primary"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#editCategoryModal"
+                                                data-category="<%= JSON.stringify(category) %>">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-sm btn-outline-danger"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#deleteCategoryModal"
+                                                data-category-id="<%= category._id %>"
+                                                data-category-name="<%= category.name %>"
+                                                <%= category.productCount > 0 ? 'disabled' : '' %>
+                                                title="<%= category.productCount > 0 ? 'Cannot delete category with products' : 'Delete category' %>">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        <% }); %>
+                        <% if (categories.length === 0) { %>
+                            <tr>
+                                <td colspan="6" class="text-center py-4">
+                                    <i class="fas fa-folder-open fa-3x text-muted mb-3"></i>
+                                    <h4>No Categories Found</h4>
+                                    <p class="text-muted">Add your first category to get started.</p>
+                                </td>
+                            </tr>
+                        <% } %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add Category Modal -->
+<div class="modal fade" id="addCategoryModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form action="/admin/categories" method="POST">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add New Category</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Category Name</label>
+                        <input type="text" class="form-control" name="name" required>
+                        <div class="form-text">The slug will be automatically generated from the name.</div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Description</label>
+                        <textarea class="form-control" name="description" rows="3"></textarea>
+                    </div>
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" name="isActive" id="newCategoryActive" checked>
+                        <label class="form-check-label" for="newCategoryActive">Active</label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Add Category</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Category Modal -->
+<div class="modal fade" id="editCategoryModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form action="/admin/categories" method="POST">
+                <input type="hidden" name="_method" value="PUT">
+                <input type="hidden" name="id" id="editCategoryId">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Category</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Category Name</label>
+                        <input type="text" class="form-control" name="name" id="editCategoryName" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Slug</label>
+                        <input type="text" class="form-control" id="editCategorySlug" disabled>
+                        <div class="form-text">Slug cannot be changed manually.</div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Description</label>
+                        <textarea class="form-control" name="description" id="editCategoryDescription" rows="3"></textarea>
+                    </div>
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" name="isActive" id="editCategoryActive">
+                        <label class="form-check-label" for="editCategoryActive">Active</label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Update Category</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Category Modal -->
+<div class="modal fade" id="deleteCategoryModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form action="/admin/categories" method="POST">
+                <input type="hidden" name="_method" value="DELETE">
+                <input type="hidden" name="id" id="deleteCategoryId">
+                <div class="modal-header">
+                    <h5 class="modal-title">Delete Category</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to delete "<span id="deleteCategoryName"></span>"?</p>
+                    <p class="text-danger mb-0">This action cannot be undone.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-danger">Delete Category</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Initialize Modals -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Edit Category Modal
+    const editCategoryModal = document.getElementById('editCategoryModal');
+    editCategoryModal.addEventListener('show.bs.modal', function(event) {
+        const button = event.relatedTarget;
+        const category = JSON.parse(button.getAttribute('data-category'));
+        
+        document.getElementById('editCategoryId').value = category._id;
+        document.getElementById('editCategoryName').value = category.name;
+        document.getElementById('editCategorySlug').value = category.slug;
+        document.getElementById('editCategoryDescription').value = category.description || '';
+        document.getElementById('editCategoryActive').checked = category.isActive;
+    });
+
+    // Delete Category Modal
+    const deleteCategoryModal = document.getElementById('deleteCategoryModal');
+    deleteCategoryModal.addEventListener('show.bs.modal', function(event) {
+        const button = event.relatedTarget;
+        const categoryId = button.getAttribute('data-category-id');
+        const categoryName = button.getAttribute('data-category-name');
+        
+        document.getElementById('deleteCategoryId').value = categoryId;
+        document.getElementById('deleteCategoryName').textContent = categoryName;
+    });
+});
+</script> 

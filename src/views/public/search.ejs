@@ -1,0 +1,89 @@
+<div class="container py-4">
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
+            <li class="breadcrumb-item"><a href="/products">Products</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Search Results</li>
+        </ol>
+    </nav>
+
+    <!-- Search Header -->
+    <div class="row align-items-center mb-4">
+        <div class="col">
+            <h1 class="mb-2">Search Results</h1>
+            <p class="lead text-muted mb-0">
+                Found <%= products.length %> result<%= products.length !== 1 ? 's' : '' %> for "<%= searchQuery %>"
+            </p>
+        </div>
+        <div class="col-auto">
+            <form class="d-flex" action="/search" method="GET">
+                <input class="form-control me-2" type="search" name="q" value="<%= searchQuery %>" placeholder="Search products..." aria-label="Search">
+                <button class="btn btn-outline-primary" type="submit">Search</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Filter Section -->
+    <div class="row mb-4">
+        <div class="col">
+            <div class="d-flex flex-wrap gap-2">
+                <a href="/search?q=<%= searchQuery %>" class="btn btn-outline-primary <%= !query.category ? 'active' : '' %>">
+                    All Categories
+                </a>
+                <% categories.forEach(function(category) { %>
+                    <a href="/search?q=<%= searchQuery %>&category=<%= category._id %>" 
+                       class="btn btn-outline-primary <%= query.category === category._id.toString() ? 'active' : '' %>">
+                        <%= category.name %>
+                    </a>
+                <% }); %>
+            </div>
+        </div>
+    </div>
+
+    <!-- Products Grid -->
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-4">
+        <% products.forEach(function(product) { %>
+            <div class="col">
+                <div class="card h-100">
+                    <% if (product.image) { %>
+                        <img src="<%= product.image %>" class="card-img-top" alt="<%= product.name %>">
+                    <% } else { %>
+                        <div class="card-img-top bg-light text-center py-5">
+                            <i class="fas fa-image fa-3x text-muted"></i>
+                        </div>
+                    <% } %>
+                    <div class="card-body">
+                        <h5 class="card-title"><%= product.name %></h5>
+                        <p class="card-text text-muted"><%= product.category ? product.category.name : 'Uncategorized' %></p>
+                        <p class="card-text"><%= product.description.substring(0, 100) %>...</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="h5 mb-0">$<%= product.price.toFixed(2) %></span>
+                            <% if (product.stock > 0) { %>
+                                <span class="badge bg-success">In Stock</span>
+                            <% } else { %>
+                                <span class="badge bg-danger">Out of Stock</span>
+                            <% } %>
+                        </div>
+                    </div>
+                    <div class="card-footer bg-white border-top-0">
+                        <a href="/products/<%= product._id %>" class="btn btn-primary w-100">View Details</a>
+                    </div>
+                </div>
+            </div>
+        <% }); %>
+    </div>
+
+    <!-- No Results Message -->
+    <% if (products.length === 0) { %>
+        <div class="text-center py-5">
+            <i class="fas fa-search fa-3x text-muted mb-3"></i>
+            <h3>No Results Found</h3>
+            <p class="text-muted">We couldn't find any products matching your search.</p>
+            <div class="mt-4">
+                <a href="/products" class="btn btn-primary me-2">Browse All Products</a>
+                <a href="/" class="btn btn-outline-primary">Go to Homepage</a>
+            </div>
+        </div>
+    <% } %>
+</div> 

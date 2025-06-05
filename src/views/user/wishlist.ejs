@@ -1,0 +1,76 @@
+<div class="container py-4">
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/dashboard">Dashboard</a></li>
+            <li class="breadcrumb-item active">My Wishlist</li>
+        </ol>
+    </nav>
+
+    <div class="card">
+        <div class="card-header">
+            <h5 class="card-title mb-0">My Wishlist</h5>
+        </div>
+        <div class="card-body">
+            <% if (products && products.length > 0) { %>
+                <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+                    <% products.forEach(function(product) { %>
+                        <div class="col">
+                            <div class="card h-100">
+                                <% if (product.image) { %>
+                                    <img src="<%= product.image %>" 
+                                         class="card-img-top" 
+                                         alt="<%= product.name %>"
+                                         style="height: 200px; object-fit: cover;">
+                                <% } else { %>
+                                    <div class="bg-light d-flex align-items-center justify-content-center"
+                                         style="height: 200px;">
+                                        <i class="fas fa-image fa-3x text-muted"></i>
+                                    </div>
+                                <% } %>
+                                <div class="card-body">
+                                    <h5 class="card-title"><%= product.name %></h5>
+                                    <% if (product.category) { %>
+                                        <span class="badge bg-info mb-2"><%= product.category.name %></span>
+                                    <% } %>
+                                    <p class="card-text text-muted">
+                                        <%= product.description ? product.description.substring(0, 100) + '...' : 'No description available' %>
+                                    </p>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <h4 class="mb-0">$<%= product.price.toFixed(2) %></h4>
+                                        <div>
+                                            <form action="/dashboard/wishlist/remove" method="POST" class="d-inline">
+                                                <input type="hidden" name="productId" value="<%= product._id %>">
+                                                <button type="submit" class="btn btn-outline-danger btn-sm me-1" title="Remove from Wishlist">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </form>
+                                            <form action="/cart/add" method="POST" class="d-inline">
+                                                <input type="hidden" name="productId" value="<%= product._id %>">
+                                                <input type="hidden" name="quantity" value="1">
+                                                <button type="submit" class="btn btn-primary btn-sm" title="Add to Cart">
+                                                    <i class="fas fa-shopping-cart"></i>
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <% }); %>
+                </div>
+            <% } else { %>
+                <div class="text-center py-5">
+                    <div class="mb-3">
+                        <i class="fas fa-heart fa-3x text-muted"></i>
+                    </div>
+                    <h4>Your Wishlist is Empty</h4>
+                    <p class="text-muted">Browse our products and add items to your wishlist.</p>
+                    <a href="/products" class="btn btn-primary">
+                        Browse Products
+                    </a>
+                </div>
+            <% } %>
+        </div>
+    </div>
+</div> 

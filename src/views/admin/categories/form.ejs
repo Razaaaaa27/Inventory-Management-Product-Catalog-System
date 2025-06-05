@@ -1,0 +1,75 @@
+<!-- Form Header -->
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="h2"><%= category._id ? 'Edit Category' : 'Add New Category' %></h1>
+    <div>
+        <a href="/admin/categories" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> Back to Categories
+        </a>
+    </div>
+</div>
+
+<!-- Category Form -->
+<div class="card">
+    <div class="card-body">
+        <form action="/admin/categories<%= category._id ? '/' + category._id + '?_method=PUT' : '' %>" method="POST" class="needs-validation" novalidate>
+            <!-- Name -->
+            <div class="mb-3">
+                <label for="name" class="form-label">Category Name</label>
+                <input type="text" 
+                       class="form-control" 
+                       id="name" 
+                       name="name" 
+                       value="<%= category.name || '' %>" 
+                       required>
+                <div class="invalid-feedback">
+                    Please enter a category name.
+                </div>
+            </div>
+
+            <!-- Description -->
+            <div class="mb-3">
+                <label for="description" class="form-label">Description</label>
+                <textarea class="form-control" 
+                          id="description" 
+                          name="description" 
+                          rows="3"><%= category.description || '' %></textarea>
+            </div>
+
+            <!-- Status -->
+            <div class="mb-3">
+                <div class="form-check form-switch">
+                    <input type="checkbox" 
+                           class="form-check-input" 
+                           id="isActive" 
+                           name="isActive"
+                           <%= category.isActive !== false ? 'checked' : '' %>>
+                    <label class="form-check-label" for="isActive">Active</label>
+                </div>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save"></i> <%= category._id ? 'Update Category' : 'Add Category' %>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+// Form validation
+(function () {
+    'use strict'
+    var forms = document.querySelectorAll('.needs-validation')
+    Array.prototype.slice.call(forms).forEach(function (form) {
+        form.addEventListener('submit', function (event) {
+            if (!form.checkValidity()) {
+                event.preventDefault()
+                event.stopPropagation()
+            }
+            form.classList.add('was-validated')
+        }, false)
+    })
+})()
+</script> 

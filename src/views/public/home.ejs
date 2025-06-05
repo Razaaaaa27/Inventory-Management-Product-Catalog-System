@@ -1,0 +1,119 @@
+<!-- Hero Section -->
+<div class="bg-primary text-white py-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-6">
+                <h1 class="display-4">Welcome to Our Store</h1>
+                <p class="lead">Discover our wide range of quality products at great prices.</p>
+                <a href="/products" class="btn btn-light btn-lg">Shop Now</a>
+            </div>
+            <div class="col-md-6 text-center">
+                <i class="fas fa-store fa-6x opacity-75"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Categories Section -->
+<div class="container py-5">
+    <h2 class="mb-4">Browse Categories</h2>
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
+        <% categories.forEach(function(category) { %>
+            <div class="col">
+                <a href="/category/<%= category.slug %>" class="text-decoration-none">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body text-center">
+                            <i class="fas fa-folder fa-3x text-primary mb-3"></i>
+                            <h5 class="card-title text-dark"><%= category.name %></h5>
+                            <% if (category.description) { %>
+                                <p class="card-text text-muted"><%= category.description %></p>
+                            <% } %>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        <% }); %>
+    </div>
+</div>
+
+<!-- Featured Products -->
+<div class="container py-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="mb-0">Featured Products</h2>
+        <a href="/products" class="btn btn-outline-primary">View All</a>
+    </div>
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
+        <% products.forEach(function(product) { %>
+            <div class="col">
+                <div class="card h-100">
+                    <% if (product.image) { %>
+                        <img src="<%= product.image %>" class="card-img-top" alt="<%= product.name %>">
+                    <% } else { %>
+                        <div class="card-img-top bg-light text-center py-5">
+                            <i class="fas fa-image fa-3x text-muted"></i>
+                        </div>
+                    <% } %>
+                    <div class="card-body">
+                        <h5 class="card-title"><%= product.name %></h5>
+                        <p class="card-text text-muted"><%= product.category ? product.category.name : 'Uncategorized' %></p>
+                        <p class="card-text"><%= product.description.substring(0, 100) %>...</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="h5 mb-0">$<%= product.price.toFixed(2) %></span>
+                            <% if (product.stock > 0) { %>
+                                <span class="badge bg-success">In Stock</span>
+                            <% } else { %>
+                                <span class="badge bg-danger">Out of Stock</span>
+                            <% } %>
+                        </div>
+                    </div>
+                    <div class="card-footer bg-white border-top-0">
+                        <a href="/products/<%= product._id %>" class="btn btn-primary w-100">View Details</a>
+                    </div>
+                </div>
+            </div>
+        <% }); %>
+    </div>
+</div>
+
+<!-- Newsletter Section -->
+<div class="bg-light py-5">
+    <div class="container">
+        <div class="row justify-content-center text-center">
+            <div class="col-md-8">
+                <h3>Stay Updated</h3>
+                <p class="text-muted">Subscribe to our newsletter for the latest products and offers.</p>
+                <form class="row g-3 justify-content-center">
+                    <div class="col-md-8">
+                        <input type="email" class="form-control form-control-lg" placeholder="Enter your email">
+                    </div>
+                    <div class="col-md-auto">
+                        <button type="submit" class="btn btn-primary btn-lg">Subscribe</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Features Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 text-center mb-4">
+                <i class="fas fa-shipping-fast fa-3x text-primary mb-3"></i>
+                <h4>Fast Shipping</h4>
+                <p>Quick delivery to your doorstep</p>
+            </div>
+            <div class="col-md-4 text-center mb-4">
+                <i class="fas fa-shield-alt fa-3x text-primary mb-3"></i>
+                <h4>Secure Shopping</h4>
+                <p>Safe and secure transactions</p>
+            </div>
+            <div class="col-md-4 text-center mb-4">
+                <i class="fas fa-headset fa-3x text-primary mb-3"></i>
+                <h4>24/7 Support</h4>
+                <p>Round-the-clock customer service</p>
+            </div>
+        </div>
+    </div>
+</section> 

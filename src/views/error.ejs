@@ -1,0 +1,27 @@
+<div class="container text-center py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="error-template">
+                <h1 class="display-4 text-danger mb-4">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    Oops!
+                </h1>
+                <h2 class="mb-3">Something went wrong</h2>
+                <div class="error-details mb-4">
+                    <%= message %>
+                    <% if (process.env.NODE_ENV === 'development' && error) { %>
+                        <pre class="mt-3 bg-light p-3 rounded"><%= error.stack %></pre>
+                    <% } %>
+                </div>
+                <div class="error-actions">
+                    <a href="/" class="btn btn-primary btn-lg me-2">
+                        <i class="fas fa-home me-2"></i>
+                        Back to Home
+                    </a>
+                    <a href="/contact" class="btn btn-secondary btn-lg">
+                        <i class="fas fa-envelope me-2"></i>
+                        Contact Support
+                    </a>
+                </div>
+            </div>
+ 

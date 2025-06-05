@@ -1,0 +1,139 @@
+<div class="container py-5">
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb" class="bg-light py-3">
+        <div class="container">
+            <ol class="breadcrumb mb-0">
+                <li class="breadcrumb-item"><a href="/" class="text-decoration-none">Home</a></li>
+                <li class="breadcrumb-item"><a href="/products" class="text-decoration-none">Products</a></li>
+                <% if (product.category) { %>
+                    <li class="breadcrumb-item">
+                        <a href="/products?category=<%= product.category._id %>" class="text-decoration-none">
+                            <%= product.category.name %>
+                        </a>
+                    </li>
+                <% } %>
+                <li class="breadcrumb-item active" aria-current="page"><%= product.name %></li>
+            </ol>
+        </div>
+    </nav>
+
+    <div class="row">
+        <!-- Product Image -->
+        <div class="col-md-6 mb-4 mb-md-0">
+            <div class="card border-0 shadow-sm">
+                <% if (product.image) { %>
+                    <img src="<%= product.image %>" class="card-img-top" alt="<%= product.name %>" style="height: 400px; object-fit: cover;">
+                <% } else { %>
+                    <div class="card-img-top d-flex align-items-center justify-content-center bg-light" style="height: 400px;">
+                        <i class="fas fa-image fa-4x text-secondary"></i>
+                    </div>
+                <% } %>
+            </div>
+        </div>
+
+        <!-- Product Details -->
+        <div class="col-md-6">
+            <div class="product-details">
+                <% if (product.category) { %>
+                    <div class="mb-3">
+                        <span class="badge bg-primary"><%= product.category.name %></span>
+                    </div>
+                <% } %>
+                
+                <h1 class="display-6 fw-bold mb-3"><%= product.name %></h1>
+                
+                <div class="mb-4">
+                    <h2 class="h1 text-primary mb-0">$<%= product.price.toFixed(2) %></h2>
+                    <% if (product.stock > 0) { %>
+                        <span class="badge bg-success mt-2">In Stock (<%= product.stock %> available)</span>
+                    <% } else { %>
+                        <span class="badge bg-danger mt-2">Out of Stock</span>
+                    <% } %>
+                </div>
+
+                <div class="mb-4">
+                    <h5 class="fw-bold mb-3">Description</h5>
+                    <p class="text-muted"><%= product.description %></p>
+                </div>
+
+                <div class="mb-4">
+                    <h5 class="fw-bold mb-3">Product Details</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2">
+                            <i class="fas fa-check-circle text-success me-2"></i>
+                            SKU: <%= product.sku || 'N/A' %>
+                        </li>
+                        <li class="mb-2">
+                            <i class="fas fa-check-circle text-success me-2"></i>
+                            Category: <%= product.category ? product.category.name : 'Uncategorized' %>
+                        </li>
+                        <li class="mb-2">
+                            <i class="fas fa-check-circle text-success me-2"></i>
+                            Stock: <%= product.stock %> units
+                        </li>
+                    </ul>
+                </div>
+
+                <% if (product.stock > 0) { %>
+                    <div class="d-grid gap-2">
+                        <button class="btn btn-primary btn-lg">
+                            <i class="fas fa-shopping-cart me-2"></i>
+                            Add to Cart
+                        </button>
+                        <button class="btn btn-outline-primary">
+                            <i class="far fa-heart me-2"></i>
+                            Add to Wishlist
+                        </button>
+                    </div>
+                <% } %>
+            </div>
+        </div>
+    </div>
+
+    <!-- Related Products -->
+    <% if (relatedProducts && relatedProducts.length > 0) { %>
+        <section class="related-products mt-5">
+            <h3 class="fw-bold mb-4">Related Products</h3>
+            <div class="row g-4">
+                <% relatedProducts.forEach(relatedProduct => { %>
+                    <div class="col-6 col-md-3">
+                        <div class="card h-100 product-card">
+                            <% if (relatedProduct.image) { %>
+                                <img src="<%= relatedProduct.image %>" class="card-img-top" alt="<%= relatedProduct.name %>">
+                            <% } else { %>
+                                <div class="card-img-top d-flex align-items-center justify-content-center bg-light">
+                                    <i class="fas fa-image fa-3x text-secondary"></i>
+                                </div>
+                            <% } %>
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    <a href="/products/<%= relatedProduct._id %>" class="text-decoration-none text-dark">
+                                        <%= relatedProduct.name %>
+                                    </a>
+                                </h5>
+                                <p class="card-text text-muted small mb-2">
+                                    <%= relatedProduct.description.substring(0, 60) %>...
+                                </p>
+                                <div class="d-flex justify-content-between align-items-center mt-3">
+                                    <span class="price">$<%= relatedProduct.price.toFixed(2) %></span>
+                                    <% if (relatedProduct.stock > 0) { %>
+                                        <span class="badge bg-success">In Stock</span>
+                                    <% } else { %>
+                                        <span class="badge bg-danger">Out of Stock</span>
+                                    <% } %>
+                                </div>
+                            </div>
+                            <div class="card-footer bg-white border-top-0">
+                                <div class="d-grid">
+                                    <a href="/products/<%= relatedProduct._id %>" class="btn btn-outline-primary">
+                                        View Details
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <% }); %>
+            </div>
+        </section>
+    <% } %>
+</div> 

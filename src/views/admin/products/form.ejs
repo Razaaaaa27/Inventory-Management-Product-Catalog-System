@@ -1,0 +1,199 @@
+<!-- Form Header -->
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="h2"><%= product._id ? 'Edit Product' : 'Add New Product' %></h1>
+    <div>
+        <a href="/admin/products" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> Back to Products
+        </a>
+    </div>
+</div>
+
+<!-- Product Form -->
+<div class="card">
+    <div class="card-body">
+        <form action="/admin/products<%= product._id ? '/' + product._id + '?_method=PUT' : '' %>" 
+              method="POST" 
+              enctype="multipart/form-data"
+              class="needs-validation" 
+              novalidate>
+            
+            <div class="row">
+                <!-- Left Column -->
+                <div class="col-md-8">
+                    <!-- Name -->
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Product Name</label>
+                        <input type="text" 
+                               class="form-control" 
+                               id="name" 
+                               name="name" 
+                               value="<%= product.name || '' %>" 
+                               required>
+                        <div class="invalid-feedback">
+                            Please enter a product name.
+                        </div>
+                    </div>
+
+                    <!-- Description -->
+                    <div class="mb-3">
+                        <label for="description" class="form-label">Description</label>
+                        <textarea class="form-control" 
+                                  id="description" 
+                                  name="description" 
+                                  rows="4"><%= product.description || '' %></textarea>
+                    </div>
+
+                    <!-- Category -->
+                    <div class="mb-3">
+                        <label for="category" class="form-label">Category</label>
+                        <select class="form-select" id="category" name="category">
+                            <option value="">Select Category</option>
+                            <% categories.forEach(function(category) { %>
+                                <option value="<%= category._id %>" 
+                                        <%= (product.category && product.category._id.toString() === category._id.toString()) ? 'selected' : '' %>>
+                                    <%= category.name %>
+                                </option>
+                            <% }); %>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Right Column -->
+                <div class="col-md-4">
+                    <!-- Image -->
+                    <div class="mb-3">
+                        <label for="image" class="form-label">Product Image</label>
+                        <div class="card">
+                            <div class="card-body text-center">
+                                <% if (product.image) { %>
+                                    <img src="<%= product.image %>" 
+                                         alt="Current product image"
+                                         class="img-fluid mb-3 rounded"
+                                         style="max-height: 200px; object-fit: contain;">
+                                    <div class="mb-3">
+                                        <div class="form-check">
+                                            <input type="checkbox" 
+                                                   class="form-check-input" 
+                                                   id="removeImage" 
+                                                   name="removeImage">
+                                            <label class="form-check-label" for="removeImage">
+                                                Remove current image
+                                            </label>
+                                        </div>
+                                    </div>
+                                <% } else { %>
+                                    <div class="text-muted mb-3">
+                                        <i class="fas fa-image fa-4x"></i>
+                                        <p class="mt-2">No image uploaded</p>
+                                    </div>
+                                <% } %>
+                                <input type="file" 
+                                       class="form-control" 
+                                       id="image" 
+                                       name="image" 
+                                       accept="image/*">
+                                <small class="form-text text-muted">
+                                    Recommended size: 800x800px, max 2MB
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Price -->
+                    <div class="mb-3">
+                        <label for="price" class="form-label">Price</label>
+                        <div class="input-group">
+                            <span class="input-group-text">$</span>
+                            <input type="number" 
+                                   class="form-control" 
+                                   id="price" 
+                                   name="price" 
+                                   value="<%= product.price || '' %>" 
+                                   step="0.01" 
+                                   min="0" 
+                                   required>
+                            <div class="invalid-feedback">
+                                Please enter a valid price.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Stock -->
+                    <div class="mb-3">
+                        <label for="stock" class="form-label">Stock</label>
+                        <input type="number" 
+                               class="form-control" 
+                               id="stock" 
+                               name="stock" 
+                               value="<%= product.stock || 0 %>" 
+                               min="0" 
+                               required>
+                        <div class="invalid-feedback">
+                            Please enter a valid stock amount.
+                        </div>
+                    </div>
+
+                    <!-- Status -->
+                    <div class="mb-3">
+                        <div class="form-check form-switch">
+                            <input type="checkbox" 
+                                   class="form-check-input" 
+                                   id="isActive" 
+                                   name="isActive"
+                                   <%= product.isActive !== false ? 'checked' : '' %>>
+                            <label class="form-check-label" for="isActive">Active</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                <a href="/admin/products" class="btn btn-secondary me-2">Cancel</a>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save"></i> <%= product._id ? 'Update Product' : 'Add Product' %>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+// Form validation
+(function () {
+    'use strict'
+    var forms = document.querySelectorAll('.needs-validation')
+    Array.prototype.slice.call(forms).forEach(function (form) {
+        form.addEventListener('submit', function (event) {
+            if (!form.checkValidity()) {
+                event.preventDefault()
+                event.stopPropagation()
+            }
+            form.classList.add('was-validated')
+        }, false)
+    })
+})()
+
+// Image preview
+document.getElementById('image').addEventListener('change', function(e) {
+    if (e.target.files && e.target.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const preview = document.createElement('img');
+            preview.src = e.target.result;
+            preview.className = 'img-fluid mb-3 rounded';
+            preview.style = 'max-height: 200px; object-fit: contain;';
+            
+            const container = document.querySelector('.card-body.text-center');
+            const oldPreview = container.querySelector('img');
+            const oldText = container.querySelector('.text-muted');
+            
+            if (oldPreview) oldPreview.remove();
+            if (oldText) oldText.remove();
+            
+            container.insertBefore(preview, container.firstChild);
+        }
+        reader.readAsDataURL(e.target.files[0]);
+    }
+});
+</script> 

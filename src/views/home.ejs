@@ -1,0 +1,117 @@
+<!-- Hero Section -->
+<div class="bg-primary text-white py-5 mb-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-6">
+                <h1 class="display-4 fw-bold mb-4">Welcome to Inventory System</h1>
+                <p class="lead mb-4">Manage your inventory efficiently with our comprehensive system. Track products, monitor stock levels, and streamline your business operations.</p>
+                <% if (!user) { %>
+                    <div class="d-flex gap-3">
+                        <a href="/auth/login" class="btn btn-light btn-lg">
+                            <i class="fas fa-sign-in-alt me-2"></i>Login
+                        </a>
+                        <a href="/auth/register" class="btn btn-outline-light btn-lg">
+                            <i class="fas fa-user-plus me-2"></i>Register
+                        </a>
+                    </div>
+                <% } else { %>
+                    <a href="<%= user.isAdmin ? '/admin' : '/dashboard' %>" class="btn btn-light btn-lg">
+                        <i class="fas fa-tachometer-alt me-2"></i>Go to Dashboard
+                    </a>
+                <% } %>
+            </div>
+            <div class="col-md-6 d-none d-md-block">
+                <img src="/uploads/inventory-image.jpg" alt="Inventory Management" class="img-fluid rounded shadow">
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Features Section -->
+<div class="container mb-5">
+    <h2 class="text-center mb-4">Key Features</h2>
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body text-center">
+                    <div class="display-4 text-primary mb-3">
+                        <i class="fas fa-box"></i>
+                    </div>
+                    <h3 class="h5">Product Management</h3>
+                    <p class="text-muted">Easily manage your products with detailed information and categories.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body text-center">
+                    <div class="display-4 text-primary mb-3">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3 class="h5">Stock Tracking</h3>
+                    <p class="text-muted">Monitor stock levels and get alerts when inventory is running low.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body text-center">
+                    <div class="display-4 text-primary mb-3">
+                        <i class="fas fa-file-alt"></i>
+                    </div>
+                    <h3 class="h5">Reports & Analytics</h3>
+                    <p class="text-muted">Generate detailed reports and analyze your inventory performance.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- About Section -->
+<div class="bg-light py-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-6">
+                <h2 class="mb-4">Why Choose Us?</h2>
+                <ul class="list-unstyled">
+                    <li class="mb-3">
+                        <i class="fas fa-check-circle text-primary me-2"></i>
+                        Easy to use interface
+                    </li>
+                    <li class="mb-3">
+                        <i class="fas fa-check-circle text-primary me-2"></i>
+                        Real-time stock updates
+                    </li>
+                    <li class="mb-3">
+                        <i class="fas fa-check-circle text-primary me-2"></i>
+                        Secure data management
+                    </li>
+                    <li class="mb-3">
+                        <i class="fas fa-check-circle text-primary me-2"></i>
+                        Comprehensive reporting
+                    </li>
+                </ul>
+            </div>
+            <div class="col-md-6">
+                <!-- <img src="/uploads/inventory-image1.jpg" alt="About Us" class="img-fluid rounded shadow-sm"> -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Call to Action -->
+<div class="container py-5">
+    <div class="text-center">
+        <h2 class="mb-4">Ready to Get Started?</h2>
+        <p class="lead mb-4">Join us today and transform your inventory management.</p>
+        <% if (!user) { %>
+            <a href="/auth/register" class="btn btn-primary btn-lg">
+                <i class="fas fa-rocket me-2"></i>Get Started Now
+            </a>
+        <% } else { %>
+            <a href="<%= user.isAdmin ? '/admin' : '/dashboard' %>" class="btn btn-primary btn-lg">
+                <i class="fas fa-tachometer-alt me-2"></i>Go to Dashboard
+            </a>
+        <% } %>
+    </div>
+</div> 
