@@ -1,5 +1,5 @@
-# Link Presentasi  : https://youtu.be/t3B6lbqkaBs
-# Link PPT  : https://drive.google.com/file/d/1I_dlJe1MnFhjT8VoFvCXYvhAzpSHqyX2/view?usp=sharing
+## Link Presentasi  : https://youtu.be/t3B6lbqkaBs
+## Link PPT  : https://drive.google.com/file/d/1I_dlJe1MnFhjT8VoFvCXYvhAzpSHqyX2/view?usp=sharing
 
 # Inventory Management System
 
